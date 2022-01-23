@@ -1,6 +1,7 @@
 package com.geoffvargo.CoderByte.LongestIncreasingSequence;
 
 import java.util.*;
+import java.util.stream.*;
 
 /**
  * Have the function LongestIncreasingSequence(arr) take the array of positive integers stored in arr and return the length
@@ -11,17 +12,46 @@ import java.util.*;
  */
 class Main {
 	
+	//	private static ArrayList<Integer> curr = new ArrayList<>();
+	private static List<List<Integer>> curr = new ArrayList<>();
+	
 	public static void main(String[] args) {
 		// keep this function call here
 		Scanner s  = new Scanner(System.in);
 		String  s1 = s.nextLine();
 		
-		System.out.print(LongestIncreasingSequence(Arrays.stream(s1.split("\\D+")).mapToInt(Integer::parseInt).toArray()));
+		System.out.print(longestIncreasingSequence(Arrays.stream(s1.split("\\D+")).mapToInt(Integer::parseInt).toArray()));
 	}
 	
-	public static int LongestIncreasingSequence(int[] arr) {
+	public static int longestIncreasingSequence(int[] arr) {
 		// code goes here
-		return arr[0];
+		
+		int size = 0;
+		
+		return longestIncreasingSequenceHLPR(arr, size, curr);
+	}
+	
+	private static int longestIncreasingSequenceHLPR(int[] arr, int size, List<List<Integer>> current) {
+		int left, right;
+		if (arr.length <= 1) {
+			return 0;
+		}
+		if (arr.length == 2) {
+			if (arr[0] < arr[1]) {
+				curr.add(IntStream.of(arr).boxed().collect(Collectors.toList()));
+				return 1;
+			} else {
+				return 0;
+			}
+		}
+		
+		size += (arr[0] < arr[1]) ? 1 : 0;
+//		curr.add(Arrays.asList(arr[0], arr[1]));
+		
+		size += longestIncreasingSequenceHLPR(Arrays.copyOfRange(arr, 1, arr.length), size, current);
+//		left = longestIncreasingSequenceHLPR(Arrays.copyOfRange(arr, 1, arr.length), size, current)
+		
+		return size;
 	}
 	
 }
