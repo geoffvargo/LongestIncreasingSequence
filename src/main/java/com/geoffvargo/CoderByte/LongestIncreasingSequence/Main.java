@@ -21,7 +21,19 @@ class Main {
 	
 	public static int LongestIncreasingSequence(int[] arr) {
 		// code goes here
-		return arr[0];
+		int size = 0;
+		for (int i = 0; i < arr.length; i++) {
+			int temp     = arr[i];
+			int currSize = 1;
+			for (int j = i + 1; j < arr.length; j++) {
+				if (arr[j-1] < arr[j]) {
+					currSize++;
+				}
+			}
+			size = Math.max(size, currSize);
+		}
+		
+		return size;
 	}
 	
 }
